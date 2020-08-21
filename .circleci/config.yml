@@ -11,7 +11,7 @@ jobs:
           docker build -f docker/Dockerfile -t rodrigokondo/cartahub:TAG$
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
           docker push rodrigokondo/cartahub:TAG$
-  workflow:
+  workflows:
     build_push_docker:
       jobs:
         - build
