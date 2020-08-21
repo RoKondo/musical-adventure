@@ -1,21 +1,24 @@
 version: 2.1
-
-orbs:
-  python: circleci/python@0.2.1
-
 jobs:
-  build-and-test:
-    executor: python/default
+  build:
+    working_directory: docker/
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
       - run:
-          command: ./manage.py test
-          name: Test
-
+        name: Install Docker client
+        command: apk add docker-cli
+      - run:
+        name: build new container
+        command: docker build -t rodrigokondo/cartahub:$CIRCLE_BRANCH
+      - run:
+        name: connect to dockerhub
+        command: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      - run:
+        name: push image
+        command: |
+          TAG="1.${CIRCLE_BUILD_NUM}"
+          docker push circleci/cci-demo-docker:$TAG
 workflows:
   main:
     jobs:
-      - build-and-test
+      - build
