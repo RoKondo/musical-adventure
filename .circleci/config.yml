@@ -1,7 +1,8 @@
 version: 2.1
 jobs:
   build:
-    working_directory: docker/
+    machine: true
+    working_directory: /docker
     steps:
       - checkout
       - run:
