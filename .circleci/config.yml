@@ -6,10 +6,10 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: |
-        TAG=1.$CIRCLE_BUILD_NUM
-        docker build -f docker/Dockerfile -t rodrigokondo/cartahub:TAG$
-        echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-        docker push rodrigokondo/cartahub:TAG$
+         TAG=1.$CIRCLE_BUILD_NUM
+         docker build -f docker/Dockerfile -t rodrigokondo/cartahub:TAG$
+         echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+         docker push rodrigokondo/cartahub:TAG$
   workflow:
     build_push_docker:
       jobs:
