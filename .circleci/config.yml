@@ -6,19 +6,14 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install Docker client
-        command: apk add docker-cli
+        apk add docker-cli
       - run:
-        name: build new container
-        command: docker build -t rodrigokondo/cartahub:$CIRCLE_BRANCH
+        docker build -t rodrigokondo/cartahub:$CIRCLE_BRANCH
       - run:
-        name: connect to dockerhub
-        command: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run:
-        name: push image
-        command: |
-          TAG="1.${CIRCLE_BUILD_NUM}"
-          docker push circleci/cci-demo-docker:$TAG
+        docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+      - run: |
+        TAG="1.${CIRCLE_BUILD_NUM}"
+        docker push rodrigokondo/cartahub:$TAG
 workflows:
   main:
     jobs:
