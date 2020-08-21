@@ -23,3 +23,5 @@ workflows:
     jobs:
       - build
       - push_image
+        requires:
+          - build
