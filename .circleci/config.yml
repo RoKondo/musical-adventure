@@ -1,38 +1,17 @@
 version: 2.1
-jobs:
-  setup:
-    steps:
-      - run: apk add docker-cli
-      - run: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-  build:
-    steps:
-      - checkout
-      - run: docker build -t rodrigokondo/cartahub:$CIRCLE_BRANCH
-  push:
-    steps:
-      - run: TAG="1.${CIRCLE_BUILD_NUM}"
-      - run: docker push rodrigokondo/cartahub:$TAG
-workflow:
-  version: 2
-  pipeline:
-    jobs:
-      - setup
-      - build
-      - push
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  jobs:
+    build:
+      docker:
+        - image: cimg/base:stable
+      steps:
+        - checkout
+        - setup_remote_docker
+        - run: |
+          TAG=1.$CIRCLE_BUILD_NUM
+          docker build -f docker/Dockerfile -t rodrigokondo/cartahub:TAG$
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          docker push rodrigokondo/cartahub:TAG$
+  workflow:
+    build_push_docker:
+      jobs:
+        -build
