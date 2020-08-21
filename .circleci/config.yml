@@ -5,11 +5,11 @@ jobs:
     working_directory: /docker
     steps:
       - checkout
-      - run:
+      - run: |
         apk add docker-cli
-      - run:
+      - run: |
         docker build -t rodrigokondo/cartahub:$CIRCLE_BRANCH
-      - run:
+      - run: |
         docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
       - run: |
         TAG="1.${CIRCLE_BUILD_NUM}"
