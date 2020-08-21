@@ -7,11 +7,8 @@ jobs:
       - checkout
       - run: |
         apk add docker-cli
-      - run: |
         docker build -t rodrigokondo/cartahub:$CIRCLE_BRANCH
-      - run: |
         docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-      - run: |
         TAG="1.${CIRCLE_BUILD_NUM}"
         docker push rodrigokondo/cartahub:$TAG
 workflows:
