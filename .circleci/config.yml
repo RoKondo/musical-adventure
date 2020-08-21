@@ -25,4 +25,4 @@ workflows:
       - build
       - push_image:
         requires:
-          - build
+          - - build
