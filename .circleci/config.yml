@@ -15,11 +15,11 @@ jobs:
       - image: cimg/base:stable
     steps:
       - setup_remote_docker
-    run:
-      name: Pushing image to dockerhub
-      command: |
-        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-        docker push rodrigokondo/cartahub:$TAG
+      - run:
+        name: Pushing image to dockerhub
+        command: |
+          echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+          docker push rodrigokondo/cartahub:$TAG
 workflows:
   build_push_docker:
     jobs:
