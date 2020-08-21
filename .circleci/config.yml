@@ -9,7 +9,8 @@ jobs:
       - run: |
           cd docker
           TAG=1.$CIRCLE_BUILD_NUM
-          docker build -t rodrigokondo/cartahub:$TAG
+          ls
+          docker build -t rodrigokondo/cartahub:$TAG .
           echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
           docker push rodrigokondo/cartahub:$TAG
 workflows:
