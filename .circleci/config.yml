@@ -1,4 +1,7 @@
 version: 2.1
+executors:
+  environment:
+    TAG: 1.$CIRCLE_BUILD_NUM
 jobs:
   build:
     docker:
@@ -6,18 +9,24 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-        docker_layer_caching: true
       - run: |
           cd docker
-          docker build -t rodrigokondo/cartahub .
-  push_image:
+          docker build -t rodrigokondo/cartahub:$TAG .
+          mkdir -p /cache
+          docker save -o /cache/image.tar  rodrigokondo/cartahub:$TAG
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./app.tar
+  push-image:
     docker:
       - image: cimg/base:stable
     steps:
+      - attach_workspace:
+          at: /tmp
       - setup_remote_docker
       - run: |
-          TAG=1.$CIRCLE_BUILD_NUM
-          docker build -t rodrigokondo/cartahub:$TAG .
+          docker load -i /tmp/image.tar
           echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
           docker push rodrigokondo/cartahub:$TAG
 workflows:
@@ -25,6 +34,6 @@ workflows:
   build_push_docker:
     jobs:
       - build
-      - push_image:
+      - push-image:
           requires:
             - build
