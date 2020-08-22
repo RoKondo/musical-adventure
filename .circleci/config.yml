@@ -11,10 +11,12 @@ jobs:
           cd docker
           docker build -t rodrigokondo/cartahub:$TAG .
           docker save -o image.tar  rodrigokondo/cartahub:$TAG
+          pwd
+          ls
       - persist_to_workspace:
           root: .
           paths:
-            - ./image.tar
+            - image.tar
   push-image:
     docker:
       - image: cimg/base:stable
