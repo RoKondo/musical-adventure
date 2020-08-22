@@ -11,10 +11,8 @@ jobs:
           cd docker
           docker build -t rodrigokondo/cartahub:$TAG .
           docker save -o image.tar  rodrigokondo/cartahub:$TAG
-          pwd
-          ls
       - persist_to_workspace:
-          root: .
+          root: /home/circleci/project/docker
           paths:
             - image.tar
   push-image:
