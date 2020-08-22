@@ -24,7 +24,9 @@ jobs:
       - setup_remote_docker
       - run: |
           docker load -i /tmp/image.tar
-          docker run  rodrigokondo/cartahub:latest carta-devops test
+          docker run  rodrigokondo/cartahub:latest carta-devops test' >>/tmp/tests
+      - store_test_result
+        path: /tmp/tests
   push-image:
     docker:
       - image: cimg/base:stable
