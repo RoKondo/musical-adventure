@@ -7,7 +7,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: |
-          cd dockerK
+          cd docker
           docker build -t rodrigokondo/cartahub:latest .
           docker save -o image.tar  rodrigokondo/cartahub:latest
       - persist_to_workspace:
