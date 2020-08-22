@@ -7,10 +7,9 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: |
-          TAG=1.$CIRCLE_WORKFLOW_ID
-          cd docker
-          docker build -t rodrigokondo/cartahub:$TAG .
-          docker save -o image.tar  rodrigokondo/cartahub:$TAG
+          cd dockerK
+          docker build -t rodrigokondo/cartahub:latest .
+          docker save -o image.tar  rodrigokondo/cartahub:latest
       - persist_to_workspace:
           root: /home/circleci/project/docker
           paths:
@@ -23,11 +22,10 @@ jobs:
           at: /tmp
       - setup_remote_docker
       - run: |
-          TAG=1.$CIRCLE_WORKFLOW_ID
           docker load -i /tmp/image.tar
           docker images
           echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-          docker push rodrigokondo/cartahub:
+          docker push rodrigokondo/cartahub:latest
 workflows:
   version: 2
   build_push_docker:
