@@ -26,7 +26,7 @@ jobs:
           docker load -i /tmp/image.tar
           docker run  rodrigokondo/cartahub:latest pytest junitxml=/tmp/test.xml
       - store_test_results:
-        path: /tmp/tests.xml
+          path: /tmp/tests.xml
       - store_artifacts:
           path: /tmp/test.xml
   push-image:
