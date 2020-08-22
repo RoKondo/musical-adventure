@@ -23,11 +23,10 @@ jobs:
           at: /tmp
       - setup_remote_docker
       - run: |
-          TAG=1.$CIRCLE_BUILD_NUM
           docker load -i /tmp/image.tar
           docker images
           echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-          docker push rodrigokondo/cartahub:$TAG
+          docker push rodrigokondo/cartahub
 workflows:
   version: 2
   build_push_docker:
