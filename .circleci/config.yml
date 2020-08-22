@@ -10,7 +10,7 @@ jobs:
           cd docker
           docker build -t rodrigokondo/cartahub:latest .
           mkdir -p /tmp/image
-          docker save -o /tmp/image.tar  rodrigokondo/cartahub:latest
+          docker save -o /tmp/image/image.tar  rodrigokondo/cartahub:latest
       - persist_to_workspace:
           root: /tmp/image
           paths:
