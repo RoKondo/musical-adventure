@@ -9,11 +9,22 @@ jobs:
       - run: |
           cd docker
           docker build -t rodrigokondo/cartahub:latest .
-          docker save -o image.tar  rodrigokondo/cartahub:latest
+          mkdir -p /tmp/image
+          docker save -o /tmp/image.tar  rodrigokondo/cartahub:latest
       - persist_to_workspace:
-          root: /home/circleci/project/docker
+          root: /tmp/image
           paths:
             - image.tar
+  test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - attach_workspace:
+        at: /tmp
+      - setup_remote_docker
+      - run: |
+          docker load -i /tmp/image.tar
+          docker run --entrypoint carta-devops test rodrigokondo/cartahub:latest
   push-image:
     docker:
       - image: cimg/base:stable
@@ -23,7 +34,6 @@ jobs:
       - setup_remote_docker
       - run: |
           docker load -i /tmp/image.tar
-          docker images
           echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
           docker push rodrigokondo/cartahub:latest
 workflows:
@@ -31,6 +41,9 @@ workflows:
   build_push_docker:
     jobs:
       - build
-      - push-image:
+      - test:
           requires:
             - build
+      - push-image:
+          requires:
+            - test
