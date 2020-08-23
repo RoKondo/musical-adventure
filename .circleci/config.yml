@@ -2,8 +2,6 @@ version: 2.1
 jobs:
   build:
     shell: /bin/sh -leo pipefail
-    environment:
-      - BASH_ENV: /etc/profile
     docker:
       - image: cimg/base:stable
     steps:
@@ -12,7 +10,7 @@ jobs:
       - run: |
           cd docker
           docker build -t rodrigokondo/cartahub:latest .
-          mkdir -p /tmp/image
+          mkdir -p /tmp/image1
           docker save -o /tmp/image/image.tar  rodrigokondo/cartahub:latest
       - persist_to_workspace:
           root: /tmp/image
