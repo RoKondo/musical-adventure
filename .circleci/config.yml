@@ -1,21 +1,52 @@
 version: 2.1
-
-orbs:
-  python: circleci/python@0.2.1
-
 jobs:
-  build-and-test:
-    executor: python/default
+  build:
+    docker:
+      - image: cimg/base:stable
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          command: ./manage.py test
-          name: Test
-
+      - setup_remote_docker
+      - run: |
+          cd docker
+          docker build -t rodrigokondo/cartahub:latest .
+          mkdir -p /tmp/image
+          docker save -o /tmp/image/image.tar  rodrigokondo/cartahub:latest
+      - persist_to_workspace:
+          root: /tmp/image
+          paths:
+            - image.tar
+  test:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - setup_remote_docker
+      - run: |
+          docker load -i /tmp/image.tar
+          docker run  rodrigokondo/cartahub:latest carta-devops test
+  push-image:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - setup_remote_docker
+      - run: |
+          docker load -i /tmp/image.tar
+          echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+          docker push rodrigokondo/cartahub:latest
 workflows:
-  main:
+  version: 2
+  build_push_docker:
     jobs:
-      - build-and-test
+      - build
+      - test:
+          requires:
+            - build
+      - push-image:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
