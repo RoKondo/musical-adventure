@@ -47,3 +47,6 @@ workflows:
       - push-image:
           requires:
             - test
+          filters:
+            branches:
+              only: master
