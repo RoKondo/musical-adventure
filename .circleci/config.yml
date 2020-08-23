@@ -1,16 +1,15 @@
 version: 2.1
 jobs:
   build:
-    shell: /bin/sh -leo pipefail
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
       - setup_remote_docker
       - run: |
-          cd docker
-          docker build -t rodrigokondo/cartahub:latest .
-          mkdir -p /tmp/image1
+          sed -i "s/$VAR/$CIRCLE_BUILD_URL/g" index.html
+          docker build -f docker/Dockerfile -t rodrigokondo/cartahub:latest .
+          mkdir -p /tmp/image
           docker save -o /tmp/image/image.tar  rodrigokondo/cartahub:latest
       - persist_to_workspace:
           root: /tmp/image
