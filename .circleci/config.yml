@@ -7,7 +7,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: |
-          sed -i 's/\$VAR/$CIRCLE_BUILD_URL/g' index.html
+          sed -i -e 's/\$VAR/$CIRCLE_BUILD_URL/g' index.html
           docker build -f docker/Dockerfile -t rodrigokondo/cartahub:latest .
           mkdir -p /tmp/image
           docker save -o /tmp/image/image.tar  rodrigokondo/cartahub:latest
