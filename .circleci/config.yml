@@ -8,6 +8,7 @@ jobs:
       - setup_remote_docker
       - run: |
           URL=$CIRCLE_BUILD_URL
+          echo $CIRCLE_BUILD_URL
           sed -i -e 's/\$VAR/$URL/g' index.html
           docker build -f docker/Dockerfile -t rodrigokondo/cartahub:latest .
           mkdir -p /tmp/image
