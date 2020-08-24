@@ -7,8 +7,8 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: |
-          echo $CIRCLE_BUILDk_URL >> index.html
-          sed -i -e 's/\$VAR/$URL/g' index.html
+          echo "$CIRCLE_BUILD_URL"
+          echo "$CIRCLE_BUILDk_URL"  >> index.html
           docker build -f docker/Dockerfile -t rodrigokondo/cartahub:latest .
           mkdir -p /tmp/image
           docker save -o /tmp/image/image.tar  rodrigokondo/cartahub:latest
@@ -48,6 +48,6 @@ workflows:
       - push-image:
           requires:
             - test
-          filters:
-            branches:
-              only: master
+#          filters:
+#            branches:
+#              only: master
