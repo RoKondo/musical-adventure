@@ -7,7 +7,8 @@ jobs:
       - checkout
       - setup_remote_docker
       - run: |
-          echo "<h2> $CIRCLE_BUILDk_URL </h2>" |tee -a index.html
+          echo $CIRCLE_BUILD_URL
+          echo "<h2> $CIRCLE_BUILD_URL </h2>" |tee -a index.html
           cat index.html
           docker build -f docker/Dockerfile -t rodrigokondo/cartahub:latest .
           mkdir -p /tmp/image
