@@ -12,8 +12,8 @@
 #################################################################################
 # BONUS
 #################################################################################
-[] Create a manifest to host your container on kubernetes (~/deployments/pod.yml)\
-[] Create a helm chart for your app (no need for fancy templating) (~/deployments/chart/)
+[x] Create a manifest to host your container on kubernetes (deployments/pod.yml)\
+[x] Create a helm chart for your app (no need for fancy templating) (deployments/chart/)
 
 #################################################################################
 # DELIVER
