@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cartahub
+  labels:
+    app: devops
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 5000
+  selector:
+    app: devops
